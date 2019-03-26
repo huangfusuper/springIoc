@@ -19,10 +19,13 @@ public class AnnotationConfigApplicationContext {
         if(target.isAnnotationPresent(ComponentScan.class)){
             ComponentScan componentScanValue = (ComponentScan) target.getAnnotation(ComponentScan.class);
             String packagePath = componentScanValue.value();
+            //将包名转换为路径名称
             String path = packagePath.replaceAll("\\.","/" );
+            //获取当前项目根路径
             String rootPackagePath = this.getClass().getResource("/").getPath();
             String targetPackagePath = rootPackagePath+path;
             File file = new File(targetPackagePath);
+            //测试是否能拿到包名
             String[] list = file.list();
             for (String s : list) {
                 System.out.println(s);
