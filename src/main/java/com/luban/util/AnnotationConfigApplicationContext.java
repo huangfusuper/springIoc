@@ -3,7 +3,6 @@ package com.luban.util;
 import com.luban.annotatethebook.anno.ComponentScan;
 
 import java.io.File;
-import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,13 +22,19 @@ public class AnnotationConfigApplicationContext {
             ComponentScan componentScanValue = (ComponentScan) target.getAnnotation(ComponentScan.class);
             String packagePath = componentScanValue.value();
             fullyQualifiedName = packagePath;
+            //将包名转换为路径名称
             String path = packagePath.replaceAll("\\.","/" );
+            //获取当前项目根路径
             String rootPackagePath = this.getClass().getResource("/").getPath();
+            //类的全路径名
             String targetPackagePath = rootPackagePath+path;
             File file = new File(targetPackagePath);
+            //所有class文件的全路径名称
             List<String> list = new ArrayList<String>();
             list = getPaths(file, list);
+            //所有class文件的全限定名
             List<String> fullyQualifiedNames = getFullyQualifiedName(list);
+            //所有class文件对应的class对象
             List<Class> classArray = getClassArray(fullyQualifiedNames);
             for (Class aClass : classArray) {
                 System.out.println(aClass.getSimpleName());
@@ -41,6 +46,12 @@ public class AnnotationConfigApplicationContext {
         return null;
     }
 
+    /**
+     * 递归查询所有文件的全路径名
+     * @param filePath
+     * @param paths
+     * @return
+     */
     public List<String> getPaths(File filePath,List<String> paths){
         File[] files = filePath.listFiles();
         if(files.length == 0){
@@ -56,6 +67,11 @@ public class AnnotationConfigApplicationContext {
         return paths;
     }
 
+    /**
+     * 根据全路径名称返回全限定名
+     * @param list
+     * @return
+     */
     public List<String> getFullyQualifiedName(List<String> list){
         List<String> fullyQualifiedNames = new ArrayList<String>();
         for (String name : list) {
@@ -66,6 +82,11 @@ public class AnnotationConfigApplicationContext {
         return fullyQualifiedNames;
     }
 
+    /**
+     * 根据全限定名  返回对应的class对象
+     * @param list
+     * @return
+     */
     public List<Class> getClassArray(List<String> list){
         List<Class> classes = new ArrayList<Class>();
         for (String fullyQualifiedName : list) {
