@@ -1,4 +1,4 @@
-package com.luban.util;
+package com.luban.exception;
 
 public class LubanSpringException extends RuntimeException {
 

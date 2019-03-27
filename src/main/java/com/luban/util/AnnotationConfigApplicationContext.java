@@ -4,7 +4,9 @@ import com.luban.annotatethebook.anno.Autowired;
 import com.luban.annotatethebook.anno.ComponentScan;
 import com.luban.annotatethebook.anno.Repository;
 import com.luban.annotatethebook.anno.Service;
-import sun.security.action.PutAllAction;
+import com.luban.exception.CannotFindAnnotationsException;
+import com.luban.exception.LubanSpringException;
+import com.luban.exception.RepeatAnnotationException;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -67,7 +69,7 @@ public class AnnotationConfigApplicationContext {
             //合并
             mergeMap();
         }else{
-            throw new CannotFindAnnotations("找不到"+ComponentScan.class+"注解");
+            throw new CannotFindAnnotationsException("找不到"+ComponentScan.class+"注解");
         }
     }
 
